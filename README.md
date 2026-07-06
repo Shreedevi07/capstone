@@ -97,19 +97,25 @@ Open the `frontend` folder in VS Code and start it using **Live Server**, or ope
 
 ### Home Page
 
-> *(Insert screenshot here)*
+![Home](screenshots/image.png)
 
 ---
 
 ### Feature 1
 
-> *(Insert screenshot here)*
+![Analyzer page](screenshots/image-1.png)
 
 ---
 
 ### Feature 2
 
-> *(Insert screenshot here)*
+![Github audit](screenshots/image-2.png)
+
+---
+
+### Feature 3
+
+![Interview prep](screenshots/image-4.png)
 
 ---
 
