@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+google-generativeai
+python-multipart
+pdfplumber
+python-docx
+httpx
+python-dotenv

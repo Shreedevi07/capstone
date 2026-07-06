@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareerPilot AI - Premium AI Career Copilot</title>
+  <!-- Google Fonts Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            zinc: {
+              950: '#09090b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #09090b;
+      color: #f4f4f5;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.06) 0px, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    .glass-card {
+      background: rgba(24, 24, 27, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(63, 63, 70, 0.4);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-card-hover:hover {
+      border-color: rgba(99, 102, 241, 0.45);
+      box-shadow: 0 12px 40px 0 rgba(99, 102, 241, 0.12);
+      transform: translateY(-2px);
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #09090b;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #27272a;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3f3f46;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+<body class="h-full select-none font-sans antialiased bg-zinc-950 text-zinc-100">
+  <div class="flex min-h-screen">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 border-r border-zinc-800 bg-zinc-950/80 backdrop-blur-xl flex flex-col h-screen sticky top-0">
+      <div class="h-16 flex items-center px-6 border-b border-zinc-800">
+        <div class="flex items-center gap-2">
+          <div class="p-2 bg-indigo-600 rounded-lg text-white">
+            <i data-lucide="briefcase" class="w-5 h-5 animate-pulse"></i>
+          </div>
+          <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-indigo-400 to-emerald-400 bg-clip-text text-transparent">
+            CareerPilot AI
+          </span>
+        </div>
+      </div>
+
+      <nav class="flex-1 px-4 py-6 space-y-1">
+        <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group text-indigo-400 bg-zinc-800 border-l-2 border-indigo-500 pl-2.5">
+          <i data-lucide="layout-dashboard" class="w-4.5 h-4.5 text-indigo-400"></i>
+          <span>Dashboard</span>
+        </button>
+        <button onclick="switchTab('ats-analyzer')" id="nav-ats-analyzer" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group text-zinc-400 hover:bg-zinc-900/60 hover:text-zinc-200">
+          <i data-lucide="file-check" class="w-4.5 h-4.5 text-zinc-500 group-hover:text-zinc-300"></i>
+          <span>ATS Analyzer</span>
+        </button>
+        <button onclick="switchTab('tailor')" id="nav-tailor" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group text-zinc-400 hover:bg-zinc-900/60 hover:text-zinc-200">
+          <i data-lucide="sparkles" class="w-4.5 h-4.5 text-zinc-500 group-hover:text-zinc-300"></i>
+          <span>Resume Tailor</span>
+        </button>
+        <button onclick="switchTab('github')" id="nav-github" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group text-zinc-400 hover:bg-zinc-900/60 hover:text-zinc-200">
+          <!-- Custom Github SVG in JS to bypass lucide brand limits -->
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-500 group-hover:text-zinc-300"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" /><path d="M9 18c-4.51 2-5-2-7-2" /></svg>
+          <span>GitHub Audit</span>
+        </button>
+        <button onclick="switchTab('interview-prep')" id="nav-interview-prep" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group text-zinc-400 hover:bg-zinc-900/60 hover:text-zinc-200">
+          <i data-lucide="message-square-code" class="w-4.5 h-4.5 text-zinc-500 group-hover:text-zinc-300"></i>
+          <span>Interview Prep</span>
+        </button>
+      </nav>
+
+      <div class="p-4 border-t border-zinc-800 bg-zinc-900/20">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-500 to-emerald-500 flex items-center justify-center font-bold text-sm text-white">
+            AM
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-xs font-semibold text-zinc-300 truncate">Alex Mercer</p>
+            <p class="text-[10px] text-zinc-500 truncate">Software Engineer</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main View Panel -->
+    <div class="flex-1 flex flex-col min-w-0">
+      
+      <!-- Top Header -->
+      <header class="h-16 border-b border-zinc-800 bg-zinc-950/40 backdrop-blur-md px-8 flex items-center justify-between sticky top-0 z-10">
+        <div>
+          <span class="text-xs text-zinc-500 font-semibold tracking-wider uppercase">AI CAREER COPILOT</span>
+        </div>
+        <div class="flex items-center gap-6">
+          <button class="text-zinc-400 hover:text-zinc-200 transition-colors p-1.5 hover:bg-zinc-900 rounded-lg">
+            <i data-lucide="bell" class="w-4.5 h-4.5"></i>
+          </button>
+          <div class="flex items-center gap-2 pl-4 border-l border-zinc-800">
+            <div class="text-right">
+              <p class="text-xs font-semibold text-zinc-300">Alex Mercer</p>
+              <span class="text-[10px] text-emerald-400 font-medium">Demo Mode</span>
+            </div>
+            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-zinc-500"></i>
+          </div>
+        </div>
+      </header>
+
+      <!-- Scrollable Inner View Content -->
+      <main class="flex-1 p-8 overflow-y-auto">
+        <div class="max-w-6xl mx-auto space-y-8">
+          
+          <!-- TAB 1: DASHBOARD -->
+          <div id="tab-dashboard" class="tab-content space-y-8 animate-fade-in">
+            <!-- Welcome Banner -->
+            <section class="glass-card p-8 rounded-2xl relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
+              <div class="relative z-10 space-y-3">
+                <h1 class="text-3xl font-extrabold tracking-tight md:text-4xl bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
+                  Welcome to CareerPilot AI
+                </h1>
+                <p class="text-zinc-400 max-w-2xl text-sm leading-relaxed">
+                  Your full-stack career development copilot. Elevate your applications, prepare for technical loops, and audit your developer profile using state-of-the-art AI.
+                </p>
+              </div>
+            </section>
+
+            <!-- Stats Grid -->
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div class="glass-card glass-card-hover p-6 rounded-xl flex items-center justify-between">
+                <div class="space-y-2">
+                  <p class="text-xs text-zinc-400 font-medium">Average ATS Score</p>
+                  <div class="flex items-baseline gap-2">
+                    <span class="text-2xl font-bold text-zinc-100">78%</span>
+                    <span class="text-[10px] text-emerald-400 font-semibold">+4%</span>
+                  </div>
+                </div>
+                <div class="p-3 rounded-lg bg-zinc-900 border border-zinc-800 text-emerald-400">
+                  <i data-lucide="file-check" class="w-5 h-5"></i>
+                </div>
+              </div>
+              <div class="glass-card glass-card-hover p-6 rounded-xl flex items-center justify-between">
+                <div class="space-y-2">
+                  <p class="text-xs text-zinc-400 font-medium">Resumes Tailored</p>
+                  <div class="flex items-baseline gap-2">
+                    <span class="text-2xl font-bold text-zinc-100">4</span>
+                    <span class="text-[10px] text-indigo-400 font-semibold">+1 today</span>
+                  </div>
+                </div>
+                <div class="p-3 rounded-lg bg-zinc-900 border border-zinc-800 text-indigo-400">
+                  <i data-lucide="sparkles" class="w-5 h-5"></i>
+                </div>
+              </div>
+              <div class="glass-card glass-card-hover p-6 rounded-xl flex items-center justify-between">
+                <div class="space-y-2">
+                  <p class="text-xs text-zinc-400 font-medium">GitHub Audit Status</p>
+                  <div class="flex items-baseline gap-2">
+                    <span class="text-2xl font-bold text-zinc-100">A Grade</span>
+                    <span class="text-[10px] text-purple-400 font-semibold">3 repos</span>
+                  </div>
+                </div>
+                <div class="p-3 rounded-lg bg-zinc-900 border border-zinc-800 text-purple-400">
+                  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="text-purple-400"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" /><path d="M9 18c-4.51 2-5-2-7-2" /></svg>
+                </div>
+              </div>
+              <div class="glass-card glass-card-hover p-6 rounded-xl flex items-center justify-between">
+                <div class="space-y-2">
+                  <p class="text-xs text-zinc-400 font-medium">Interview Readiness</p>
+                  <div class="flex items-baseline gap-2">
+                    <span class="text-2xl font-bold text-zinc-100">85%</span>
+                    <span class="text-[10px] text-amber-400 font-semibold">+5%</span>
+                  </div>
+                </div>
+                <div class="p-3 rounded-lg bg-zinc-900 border border-zinc-800 text-amber-400">
+                  <i data-lucide="message-square-code" class="w-5 h-5"></i>
+                </div>
+              </div>
+            </section>
+
+            <!-- Main Charts & Activity Logs -->
+            <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <!-- Visual Line Chart -->
+              <div class="glass-card p-6 rounded-xl lg:col-span-2 space-y-4">
+                <div class="flex items-center justify-between">
+                  <h2 class="text-sm font-bold text-zinc-200 flex items-center gap-2">
+                    <i data-lucide="trending-up" class="w-4 h-4 text-indigo-400"></i>
+                    ATS Match Performance Trend
+                  </h2>
+                  <span class="text-xs text-zinc-500 font-medium">Last 5 Uploads</span>
+                </div>
+                <div class="h-60 w-full flex items-end justify-between px-4 pb-2 pt-6 relative">
+                  <!-- Grid lines -->
+                  <div class="absolute inset-x-0 top-1/4 border-t border-zinc-800/40"></div>
+                  <div class="absolute inset-x-0 top-2/4 border-t border-zinc-800/40"></div>
+                  <div class="absolute inset-x-0 top-3/4 border-t border-zinc-800/40"></div>
+                  <!-- Line Chart SVG -->
+                  <svg class="absolute inset-0 h-full w-full px-6 pt-6 pb-8" viewBox="0 0 500 200" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id="chart-grad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#6366f1" stop-opacity="0.3"/>
+                        <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M 10 160 L 125 140 L 240 100 L 355 60 L 470 44 L 470 200 L 10 200 Z" fill="url(#chart-grad)"></path>
+                    <path d="M 10 160 L 125 140 L 240 100 L 355 60 L 470 44" fill="none" stroke="#6366f1" stroke-width="3" stroke-linecap="round" class="drop-shadow-[0_0_8px_rgba(99,102,241,0.5)]"></path>
+                    <circle cx="10" cy="160" r="5" fill="#18181b" stroke="#6366f1" stroke-width="2"></circle>
+                    <circle cx="125" cy="140" r="5" fill="#18181b" stroke="#6366f1" stroke-width="2"></circle>
+                    <circle cx="240" cy="100" r="5" fill="#18181b" stroke="#6366f1" stroke-width="2"></circle>
+                    <circle cx="355" cy="60" r="5" fill="#18181b" stroke="#6366f1" stroke-width="2"></circle>
+                    <circle cx="470" cy="44" r="5" fill="#18181b" stroke="#6366f1" stroke-width="2"></circle>
+                  </svg>
+                  <div class="flex justify-between w-full text-[10px] text-zinc-500 mt-2 z-10">
+                    <span>Resume v1.0 (52%)</span>
+                    <span>v1.1 (60%)</span>
+                    <span>v1.2 (72%)</span>
+                    <span>Tailored 1 (84%)</span>
+                    <span>Current (92%)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Activity Log -->
+              <div class="glass-card p-6 rounded-xl space-y-4">
+                <h2 class="text-sm font-bold text-zinc-200 flex items-center gap-2">
+                  <i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i>
+                  Recent Activity
+                </h2>
+                <div class="space-y-4">
+                  <div class="flex gap-3 text-xs leading-normal">
+                    <div class="p-1.5 h-fit rounded-md bg-zinc-900 border border-zinc-800 text-indigo-400">
+                      <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                    </div>
+                    <div>
+                      <p class="text-zinc-300 font-medium">Tailored summary for Staff Engineer role</p>
+                      <span class="text-[10px] text-zinc-500">2 hours ago</span>
+                    </div>
+                  </div>
+                  <div class="flex gap-3 text-xs leading-normal">
+                    <div class="p-1.5 h-fit rounded-md bg-zinc-900 border border-zinc-800 text-purple-400">
+                      <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="text-purple-400"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" /><path d="M9 18c-4.51 2-5-2-7-2" /></svg>
+                    </div>
+                    <div>
+                      <p class="text-zinc-300 font-medium">Audited GitHub repo fastapi-copilot</p>
+                      <span class="text-[10px] text-zinc-500">4 hours ago</span>
+                    </div>
+                  </div>
+                  <div class="flex gap-3 text-xs leading-normal">
+                    <div class="p-1.5 h-fit rounded-md bg-zinc-900 border border-zinc-800 text-emerald-400">
+                      <i data-lucide="file-check" class="w-3.5 h-3.5"></i>
+                    </div>
+                    <div>
+                      <p class="text-zinc-300 font-medium">Ran ATS match analysis for Web Specialist</p>
+                      <span class="text-[10px] text-zinc-500">1 day ago</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Navigation Shortcuts -->
+            <section class="space-y-4">
+              <h2 class="text-base font-bold text-zinc-300">Quick Shortcuts</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <button onclick="switchTab('ats-analyzer')" class="glass-card p-6 rounded-xl flex items-start gap-4 hover:-translate-y-1 hover:shadow-xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 hover:border-emerald-500/50 text-left transition-all w-full">
+                  <div class="p-3 rounded-lg bg-zinc-950/80 border border-zinc-800 text-emerald-400">
+                    <i data-lucide="file-check" class="w-5.5 h-5.5"></i>
+                  </div>
+                  <div class="flex-1 space-y-1">
+                    <h3 class="text-sm font-bold text-zinc-200">ATS Analyzer</h3>
+                    <p class="text-xs text-zinc-400">Scan your resume against a target job description and detect skill gaps.</p>
+                  </div>
+                </button>
+                <button onclick="switchTab('tailor')" class="glass-card p-6 rounded-xl flex items-start gap-4 hover:-translate-y-1 hover:shadow-xl bg-gradient-to-br from-indigo-500/10 to-blue-500/10 hover:border-indigo-500/50 text-left transition-all w-full">
+                  <div class="p-3 rounded-lg bg-zinc-950/80 border border-zinc-800 text-indigo-400">
+                    <i data-lucide="sparkles" class="w-5.5 h-5.5"></i>
+                  </div>
+                  <div class="flex-1 space-y-1">
+                    <h3 class="text-sm font-bold text-zinc-200">AI Resume Tailor</h3>
+                    <p class="text-xs text-zinc-400">Instantly optimize your professional summary and projects to match a job post.</p>
+                  </div>
+                </button>
+              </div>
+            </section>
+          </div>
+
+          <!-- TAB 2: ATS ANALYZER -->
+          <div id="tab-ats-analyzer" class="tab-content hidden space-y-8 animate-fade-in">
+            <div class="space-y-2">
+              <h1 class="text-2xl font-bold tracking-tight text-zinc-100 flex items-center gap-2">
+                <i data-lucide="file-check" class="text-emerald-400"></i>
+                ATS Resume Analyzer
+              </h1>
+              <p class="text-zinc-400 text-xs leading-relaxed max-w-xl">
+                Scan your resume against a target role description to check keyword optimization and receive specific format edits.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+              <!-- Inputs -->
+              <div class="glass-card p-6 rounded-xl space-y-6">
+                <form id="ats-form" onsubmit="handleAtsSubmit(event)" class="space-y-6">
+                  <div class="space-y-2">
+                    <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block">1. Your Resume</label>
+                    <div id="ats-file-zone" class="border border-dashed border-zinc-700/60 hover:border-indigo-500/60 rounded-lg p-6 bg-zinc-900/30 transition-all flex flex-col items-center justify-center text-center cursor-pointer relative group">
+                      <input type="file" id="ats-file-input" accept=".pdf,.docx,.txt" onchange="handleAtsFile(event)" class="absolute inset-0 opacity-0 cursor-pointer" />
+                      <i data-lucide="upload" class="w-6 h-6 text-zinc-500 group-hover:text-indigo-400 mb-2 transition-colors"></i>
+                      <p class="text-xs font-semibold text-zinc-300" id="ats-file-label">Upload PDF, DOCX, or TXT</p>
+                      <p class="text-[10px] text-zinc-500 mt-1">Drag & drop or click to browse</p>
+                    </div>
+                    <div id="ats-file-display" class="hidden flex items-center justify-between p-3 bg-indigo-500/10 border border-indigo-500/30 rounded-lg">
+                      <div class="flex items-center gap-3">
+                        <i data-lucide="file-text" class="w-4.5 h-4.5 text-indigo-400"></i>
+                        <div>
+                          <p class="text-xs font-medium text-zinc-200 truncate max-w-[200px]" id="ats-filename"></p>
+                          <p class="text-[9px] text-zinc-500" id="ats-filesize"></p>
+                        </div>
+                      </div>
+                      <button type="button" onclick="removeAtsFile()" class="text-[10px] text-red-400 hover:text-red-300 font-semibold">Remove</button>
+                    </div>
+                    <textarea id="ats-text-input" placeholder="Alternatively, paste your raw resume text here..." rows="5" class="w-full text-xs bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-zinc-200 focus:outline-none focus:border-indigo-500/50 placeholder:text-zinc-600 transition-all font-mono"></textarea>
+                  </div>
+
+                  <div class="space-y-2">
+                    <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block">2. Target Job Description</label>
+                    <textarea id="ats-job-input" placeholder="Paste the target job description here..." required rows="8" class="w-full text-xs bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-zinc-200 focus:outline-none focus:border-indigo-500/50 placeholder:text-zinc-600 transition-all font-sans"></textarea>
+                  </div>
+
+                  <button type="submit" id="ats-submit-btn" class="w-full py-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg">
+                    Run Match Analysis
+                  </button>
+                </form>
+              </div>
+
+              <!-- Output -->
+              <div id="ats-result-panel" class="space-y-6">
+                <div class="glass-card p-12 rounded-xl text-center text-zinc-500 flex flex-col items-center justify-center h-full min-h-[400px]">
+                  <i data-lucide="file-check" class="w-12 h-12 text-zinc-700 mb-3 animate-pulse"></i>
+                  <p class="text-sm font-semibold text-zinc-400">Analysis Awaiting Trigger</p>
+                  <p class="text-xs text-zinc-500 mt-1 max-w-xs leading-relaxed">
+                    Provide your resume and a target job description, then run the match check to generate metrics.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 3: RESUME TAILOR -->
+          <div id="tab-tailor" class="tab-content hidden space-y-8 animate-fade-in">
+            <div class="space-y-2">
+              <h1 class="text-2xl font-bold tracking-tight text-zinc-100 flex items-center gap-2">
+                <i data-lucide="sparkles" class="text-indigo-400"></i>
+                AI Resume Tailor
+              </h1>
+              <p class="text-zinc-400 text-xs leading-relaxed max-w-xl">
+                Instantly rewrite summaries, project metrics, and bullet points to match the language and objectives of the target job description.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+              <!-- Inputs -->
+              <div class="glass-card p-6 rounded-xl space-y-6">
+                <form id="tailor-form" onsubmit="handleTailorSubmit(event)" class="space-y-6">
+                  <div class="space-y-2">
+                    <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block">1. Your Resume</label>
+                    <div id="tailor-file-zone" class="border border-dashed border-zinc-700/60 hover:border-indigo-500/60 rounded-lg p-6 bg-zinc-900/30 transition-all flex flex-col items-center justify-center text-center cursor-pointer relative group">
+                      <input type="file" id="tailor-file-input" accept=".pdf,.docx,.txt" onchange="handleTailorFile(event)" class="absolute inset-0 opacity-0 cursor-pointer" />
+                      <i data-lucide="upload" class="w-6 h-6 text-zinc-500 group-hover:text-indigo-400 mb-2 transition-colors"></i>
+                      <p class="text-xs font-semibold text-zinc-300" id="tailor-file-label">Upload PDF, DOCX, or TXT</p>
+                      <p class="text-[10px] text-zinc-500 mt-1">Drag & drop or click to browse</p>
+                    </div>
+                    <div id="tailor-file-display" class="hidden flex items-center justify-between p-3 bg-indigo-500/10 border border-indigo-500/30 rounded-lg">
+                      <div class="flex items-center gap-3">
+                        <i data-lucide="file-text" class="w-4.5 h-4.5 text-indigo-400"></i>
+                        <div>
+                          <p class="text-xs font-medium text-zinc-200 truncate max-w-[200px]" id="tailor-filename"></p>
+                          <p class="text-[9px] text-zinc-500" id="tailor-filesize"></p>
+                        </div>
+                      </div>
+                      <button type="button" onclick="removeTailorFile()" class="text-[10px] text-red-400 hover:text-red-300 font-semibold">Remove</button>
+                    </div>
+                    <textarea id="tailor-text-input" placeholder="Alternatively, paste your raw resume text here..." rows="5" class="w-full text-xs bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-zinc-200 focus:outline-none focus:border-indigo-500/50 placeholder:text-zinc-600 transition-all font-mono"></textarea>
+                  </div>
+
+                  <div class="space-y-2">
+                    <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block">2. Target Job Description</label>
+                    <textarea id="tailor-job-input" placeholder="Paste the target job description here..." required rows="8" class="w-full text-xs bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-zinc-200 focus:outline-none focus:border-indigo-500/50 placeholder:text-zinc-600 transition-all font-sans"></textarea>
+                  </div>
+
+                  <button type="submit" id="tailor-submit-btn" class="w-full py-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg">
+                    Run Resume Tailor
+                  </button>
+                </form>
+              </div>
+
+              <!-- Output preview -->
+              <div id="tailor-result-panel" class="space-y-6">
+                <div class="glass-card p-12 rounded-xl text-center text-zinc-500 flex flex-col items-center justify-center h-full min-h-[400px]">
+                  <i data-lucide="sparkles" class="w-12 h-12 text-zinc-700 mb-3 animate-pulse"></i>
+                  <p class="text-sm font-semibold text-zinc-400">Tailored Preview Awaiting Trigger</p>
+                  <p class="text-xs text-zinc-500 mt-1 max-w-xs leading-relaxed">
+                    Provide your background details and a target role post, then run the tailoring engine to generate custom resumes.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 4: GITHUB AUDIT -->
+          <div id="tab-github" class="tab-content hidden space-y-8 animate-fade-in">
+            <div class="space-y-2">
+              <h1 class="text-2xl font-bold tracking-tight text-zinc-100 flex items-center gap-2">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="text-purple-400"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" /><path d="M9 18c-4.51 2-5-2-7-2" /></svg>
+                GitHub Portfolio Audit
+              </h1>
+              <p class="text-zinc-400 text-xs leading-relaxed max-w-xl">
+                Scan your public repositories to review tech stack concentrations, discover highlighting priorities, and get documentation checklists.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+              <!-- Sidebar inputs -->
+              <div class="space-y-6 lg:col-span-1">
+                <div class="glass-card p-6 rounded-xl space-y-4">
+                  <h3 class="text-xs font-bold text-zinc-300 uppercase tracking-wider block">Audit Profile</h3>
+                  <form onsubmit="handleGithubSubmit(event)" class="space-y-3">
+                    <div class="relative">
+                      <input type="text" id="github-username" placeholder="GitHub username (e.g. mock)" required class="w-full text-xs bg-zinc-900 border border-zinc-800 rounded-lg pl-9 pr-3 py-3 text-zinc-200 focus:outline-none focus:border-indigo-500/50 placeholder:text-zinc-600 transition-all" />
+                      <i data-lucide="search" class="w-4.5 h-4.5 text-zinc-500 absolute left-3 top-3.5"></i>
+                    </div>
+                    <button type="submit" id="github-submit-btn" class="w-full py-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg">
+                      Run Profile Audit
+                    </button>
+                  </form>
+                  <p class="text-[10px] text-zinc-500 leading-normal">
+                    Type <strong class="text-indigo-400">mock</strong> to immediately populate high-quality test data without querying the live GitHub API.
+                  </p>
+                </div>
+
+                <div id="github-profile-card" class="hidden"></div>
+              </div>
+
+              <!-- Main Repo List and Audit Suggestions -->
+              <div id="github-result-panel" class="lg:col-span-2 space-y-6">
+                <div class="glass-card p-12 rounded-xl text-center text-zinc-500 flex flex-col items-center justify-center h-full min-h-[400px]">
+                  <svg viewBox="0 0 24 24" width="48" height="48" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-700 mb-3 animate-pulse"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" /><path d="M9 18c-4.51 2-5-2-7-2" /></svg>
+                  <p class="text-sm font-semibold text-zinc-400">Audit Awaiting Search</p>
+                  <p class="text-xs text-zinc-500 mt-1 max-w-xs leading-relaxed">
+                    Provide a GitHub profile handle to check for repository patterns, stars, and code recommendations.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 5: INTERVIEW PREP -->
+          <div id="tab-interview-prep" class="tab-content hidden space-y-8 animate-fade-in">
+            <div class="space-y-2">
+              <h1 class="text-2xl font-bold tracking-tight text-zinc-100 flex items-center gap-2">
+                <i data-lucide="message-square-code" class="text-amber-400"></i>
+                AI Interview Preparation
+              </h1>
+              <p class="text-zinc-400 text-xs leading-relaxed max-w-xl">
+                Generate targeted behavioral, core technical, and culture-fit mock questions matching your experience with the job specification.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+              <!-- Inputs -->
+              <div class="glass-card p-6 rounded-xl space-y-6 lg:col-span-1">
+                <form id="interview-form" onsubmit="handleInterviewSubmit(event)" class="space-y-6">
+                  <div class="space-y-2">
+                    <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block">1. Your Resume</label>
+                    <div id="interview-file-zone" class="border border-dashed border-zinc-700/60 hover:border-indigo-500/60 rounded-lg p-6 bg-zinc-900/30 transition-all flex flex-col items-center justify-center text-center cursor-pointer relative group">
+                      <input type="file" id="interview-file-input" accept=".pdf,.docx,.txt" onchange="handleInterviewFile(event)" class="absolute inset-0 opacity-0 cursor-pointer" />
+                      <i data-lucide="upload" class="w-6 h-6 text-zinc-500 group-hover:text-indigo-400 mb-2 transition-colors"></i>
+                      <p class="text-xs font-semibold text-zinc-300" id="interview-file-label">Upload PDF, DOCX, or TXT</p>
+                      <p class="text-[10px] text-zinc-500 mt-1">Drag & drop or click to browse</p>
+                    </div>
+                    <div id="interview-file-display" class="hidden flex items-center justify-between p-3 bg-indigo-500/10 border border-indigo-500/30 rounded-lg">
+                      <div class="flex items-center gap-3">
+                        <i data-lucide="file-text" class="w-4.5 h-4.5 text-indigo-400"></i>
+                        <div>
+                          <p class="text-xs font-medium text-zinc-200 truncate max-w-[200px]" id="interview-filename"></p>
+                          <p class="text-[9px] text-zinc-500" id="interview-filesize"></p>
+                        </div>
+                      </div>
+                      <button type="button" onclick="removeInterviewFile()" class="text-[10px] text-red-400 hover:text-red-300 font-semibold">Remove</button>
+                    </div>
+                    <textarea id="interview-text-input" placeholder="Alternatively, paste your raw resume text here..." rows="5" class="w-full text-xs bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-zinc-200 focus:outline-none focus:border-indigo-500/50 placeholder:text-zinc-600 transition-all font-mono"></textarea>
+                  </div>
+
+                  <div class="space-y-2">
+                    <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block">2. Target Job Description</label>
+                    <textarea id="interview-job-input" placeholder="Paste the target job description here..." required rows="8" class="w-full text-xs bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-zinc-200 focus:outline-none focus:border-indigo-500/50 placeholder:text-zinc-600 transition-all font-sans"></textarea>
+                  </div>
+
+                  <button type="submit" id="interview-submit-btn" class="w-full py-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg">
+                    Generate Interview Questions
+                  </button>
+                </form>
+              </div>
+
+              <!-- Visual Question Accordion Deck -->
+              <div id="interview-result-panel" class="lg:col-span-2 space-y-6">
+                <div class="glass-card p-12 rounded-xl text-center text-zinc-500 flex flex-col items-center justify-center h-full min-h-[400px]">
+                  <i data-lucide="message-square-code" class="w-12 h-12 text-zinc-700 mb-3 animate-pulse"></i>
+                  <p class="text-sm font-semibold text-zinc-400">Prep Panel Awaiting Trigger</p>
+                  <p class="text-xs text-zinc-500 mt-1 max-w-xs leading-relaxed">
+                    Provide your background details and a target role post, then run the generation engine to compile your customized practice deck.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // In-memory state
+    let atsFile = null;
+    let tailorFile = null;
+    let interviewFile = null;
+    
+    let activeInterviewTab = "All";
+    let interviewQuestions = [];
+    let expandedQuestions = {};
+
+    let tailoredData = null;
+
+    // Load Lucide Icons initial call
+    lucide.createIcons();
+
+    // Tab switcher function
+    function switchTab(tabId) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      // Show selected tab
+      document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+      // Update active nav button state
+      document.querySelectorAll('.nav-item').forEach(el => {
+        el.className = "nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group text-zinc-400 hover:bg-zinc-900/60 hover:text-zinc-200";
+        // Reset sub icons color
+        const icon = el.querySelector('i');
+        if (icon) icon.className = "w-4.5 h-4.5 text-zinc-500 group-hover:text-zinc-300";
+      });
+
+      const activeBtn = document.getElementById('nav-' + tabId);
+      if (activeBtn) {
+        activeBtn.className = "nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group text-indigo-400 bg-zinc-800 border-l-2 border-indigo-500 pl-2.5";
+        const activeIcon = activeBtn.querySelector('i');
+        if (activeIcon) activeIcon.className = "w-4.5 h-4.5 text-indigo-400";
+      }
+
+      // Re-trigger layout sizing/icons
+      lucide.createIcons();
+    }
+
+    // ------------------ ATS ANALYZER LOGIC ------------------
+    function handleAtsFile(e) {
+      if (e.target.files && e.target.files[0]) {
+        atsFile = e.target.files[0];
+        document.getElementById('ats-file-zone').classList.add('hidden');
+        document.getElementById('ats-file-display').classList.remove('hidden');
+        document.getElementById('ats-filename').innerText = atsFile.name;
+        document.getElementById('ats-filesize').innerText = (atsFile.size / 1024).toFixed(1) + " KB";
+        document.getElementById('ats-text-input').classList.add('hidden');
+      }
+    }
+
+    function removeAtsFile() {
+      atsFile = null;
+      document.getElementById('ats-file-input').value = "";
+      document.getElementById('ats-file-zone').classList.remove('hidden');
+      document.getElementById('ats-file-display').classList.add('hidden');
+      document.getElementById('ats-text-input').classList.remove('hidden');
+    }
+
+    async function handleAtsSubmit(e) {
+      e.preventDefault();
+      const resumeText = document.getElementById('ats-text-input').value.trim();
+      const jobDesc = document.getElementById('ats-job-input').value.trim();
+
+      if (!atsFile && !resumeText) {
+        alert("Please upload a resume file or paste your resume text.");
+        return;
+      }
+
+      const submitBtn = document.getElementById('ats-submit-btn');
+      const resultPanel = document.getElementById('ats-result-panel');
+
+      // Loader state
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Analyzing Match...`;
+      lucide.createIcons();
+
+      resultPanel.innerHTML = `
+        <div class="glass-card p-12 rounded-xl text-center text-zinc-500 flex flex-col items-center justify-center h-full min-h-[400px]">
+          <i data-lucide="loader-2" class="w-9 h-9 text-indigo-400 animate-spin mb-4"></i>
+          <p class="text-xs text-zinc-300 font-semibold">Running ATS matching engine...</p>
+          <p class="text-[10px] text-zinc-500 mt-1 max-w-xs leading-relaxed">Evaluating candidate keywords and formatting rules...</p>
+        </div>
+      `;
+      lucide.createIcons();
+
+      const formData = new FormData();
+      if (atsFile) {
+        formData.append("file", atsFile);
+      } else {
+        formData.append("resume_text", resumeText);
+      }
+      formData.append("job_description", jobDesc);
+
+      try {
+        const response = await fetch("/api/match", {
+          method: "POST",
+          body: formData
+        });
+
+        if (!response.ok) throw new Error("Match endpoint returned an error status.");
+        
+        const result = await response.json();
+        
+        // Render Output
+        renderAtsResult(result);
+      } catch (err) {
+        resultPanel.innerHTML = `
+          <div class="glass-card p-6 rounded-xl border border-red-500/20 bg-red-500/5 text-center space-y-2">
+            <i data-lucide="alert-circle" class="w-10 h-10 text-red-400 mx-auto"></i>
+            <h4 class="text-sm font-bold text-red-200">Failed to Complete Analysis</h4>
+            <p class="text-xs text-red-400">${err.message || "Ensure the FastAPI backend is running on port 8000."}</p>
+          </div>
+        `;
+        lucide.createIcons();
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Run Match Analysis";
+      }
+    }
+
+    function renderAtsResult(res) {
+      const panel = document.getElementById('ats-result-panel');
+      const borderCol = res.score >= 70 ? "#10b981" : res.score >= 50 ? "#f59e0b" : "#ef4444";
+      const dashOffset = 251.2 - (251.2 * res.score) / 100;
+
+      let matchingPills = res.matching_skills.map(s => `
+        <span class="text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">${s}</span>
+      `).join('');
+      if (!matchingPills) matchingPills = '<span class="text-[10px] text-zinc-500 italic">No matching keywords.</span>';
+
+      let missingPills = res.missing_skills.map(s => `
+        <span class="text-[10px] font-semibold bg-amber-500/10 text-amber-300 px-2 py-0.5 rounded border border-amber-500/20">${s}</span>
+      `).join('');
+      if (!missingPills) missingPills = '<span class="text-[10px] text-emerald-400 italic">None! Excellent fit.</span>';
+
+      const suggestionsList = res.suggestions.map(s => `
+        <li class="text-xs text-zinc-300 leading-normal flex items-start gap-2">
+          <span class="text-indigo-400 font-bold mt-0.5">•</span>
+          <span>${s}</span>
+        </li>
+      `).join('');
+
+      const formatList = res.formatting_issues.map(s => `
+        <li class="text-xs text-zinc-300 leading-normal flex items-start gap-2">
+          <span class="text-rose-400 font-bold mt-0.5">•</span>
+          <span>${s}</span>
+        </li>
+      `).join('');
+
+      panel.innerHTML = `
+        <div class="space-y-6 animate-fade-in">
+          <!-- Score card -->
+          <div class="glass-card p-6 rounded-xl flex flex-col sm:flex-row items-center gap-6">
+            <div class="relative w-28 h-28 flex items-center justify-center">
+              <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" stroke="#27272a" stroke-width="8" fill="transparent" />
+                <circle cx="50" cy="50" r="40" stroke="${borderCol}" stroke-width="8" fill="transparent" 
+                        stroke-dasharray="251.2" stroke-dashoffset="${dashOffset}" stroke-linecap="round" />
+              </svg>
+              <div class="absolute flex flex-col items-center">
+                <span class="text-2xl font-black text-zinc-100">${res.score}%</span>
+                <span class="text-[9px] text-zinc-500 font-bold uppercase tracking-wide">ATS Fit</span>
+              </div>
+            </div>
+            <div class="flex-1 text-center sm:text-left space-y-2">
+              <h3 class="text-base font-bold text-zinc-200">
+                ${res.score >= 70 ? "Strong Keyword Optimization!" : res.score >= 50 ? "Moderate Role Alignment" : "Critical Gaps Detected"}
+              </h3>
+              <p class="text-xs text-zinc-400 leading-relaxed">
+                Matches keyword counts, checks core skills, and detects layout inconsistencies.
+              </p>
+            </div>
+          </div>
+
+          <!-- Skills breakdown -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="glass-card p-5 rounded-xl space-y-3">
+              <h4 class="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
+                <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-400"></i>
+                Matching Skills (${res.matching_skills.length})
+              </h4>
+              <div class="flex flex-wrap gap-1.5">${matchingPills}</div>
+            </div>
+            <div class="glass-card p-5 rounded-xl space-y-3">
+              <h4 class="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
+                <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-amber-400"></i>
+                Missing Key Skills (${res.missing_skills.length})
+              </h4>
+              <div class="flex flex-wrap gap-1.5">${missingPills}</div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="glass-card p-5 rounded-xl space-y-3">
+            <h4 class="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="help-circle" class="w-3.5 h-3.5 text-indigo-400"></i>
+              Key Optimization Actions
+            </h4>
+            <ul class="space-y-2">${suggestionsList}</ul>
+          </div>
+
+          <!-- Formatting -->
+          <div class="glass-card p-5 rounded-xl space-y-3">
+            <h4 class="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-rose-400"></i>
+              Formatting & Readability Alerts
+            </h4>
+            <ul class="space-y-2">${formatList}</ul>
+          </div>
+        </div>
+      `;
+      lucide.createIcons();
+    }
+
+
+    // ------------------ RESUME TAILOR LOGIC ------------------
+    function handleTailorFile(e) {
+      if (e.target.files && e.target.files[0]) {
+        tailorFile = e.target.files[0];
+        document.getElementById('tailor-file-zone').classList.add('hidden');
+        document.getElementById('tailor-file-display').classList.remove('hidden');
+        document.getElementById('tailor-filename').innerText = tailorFile.name;
+        document.getElementById('tailor-filesize').innerText = (tailorFile.size / 1024).toFixed(1) + " KB";
+        document.getElementById('tailor-text-input').classList.add('hidden');
+      }
+    }
+
+    function removeTailorFile() {
+      tailorFile = null;
+      document.getElementById('tailor-file-input').value = "";
+      document.getElementById('tailor-file-zone').classList.remove('hidden');
+      document.getElementById('tailor-file-display').classList.add('hidden');
+      document.getElementById('tailor-text-input').classList.remove('hidden');
+    }
+
+    async function handleTailorSubmit(e) {
+      e.preventDefault();
+      const resumeText = document.getElementById('tailor-text-input').value.trim();
+      const jobDesc = document.getElementById('tailor-job-input').value.trim();
+
+      if (!tailorFile && !resumeText) {
+        alert("Please upload a resume file or paste your resume text.");
+        return;
+      }
+
+      const submitBtn = document.getElementById('tailor-submit-btn');
+      const resultPanel = document.getElementById('tailor-result-panel');
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Tailoring Content...`;
+      lucide.createIcons();
+
+      resultPanel.innerHTML = `
+        <div class="glass-card p-12 rounded-xl text-center text-zinc-500 flex flex-col items-center justify-center h-full min-h-[400px]">
+          <i data-lucide="loader-2" class="w-9 h-9 text-indigo-400 animate-spin mb-4"></i>
+          <p class="text-xs text-zinc-300 font-semibold">Generating tailored copy...</p>
+          <p class="text-[10px] text-zinc-500 mt-1 max-w-xs leading-relaxed">Formatting metrics and aligning experiences with job specifications...</p>
+        </div>
+      `;
+      lucide.createIcons();
+
+      const formData = new FormData();
+      if (tailorFile) {
+        formData.append("file", tailorFile);
+      } else {
+        formData.append("resume_text", resumeText);
+      }
+      formData.append("job_description", jobDesc);
+
+      try {
+        const response = await fetch("/api/tailor", {
+          method: "POST",
+          body: formData
+        });
+
+        if (!response.ok) throw new Error("Tailor endpoint returned error status.");
+        
+        tailoredData = await response.json();
+        renderTailorResult(tailoredData);
+      } catch (err) {
+        resultPanel.innerHTML = `
+          <div class="glass-card p-6 rounded-xl border border-red-500/20 bg-red-500/5 text-center space-y-2">
+            <i data-lucide="alert-circle" class="w-10 h-10 text-red-400 mx-auto"></i>
+            <h4 class="text-sm font-bold text-red-200">Failed to Tailor Resume</h4>
+            <p class="text-xs text-red-400">${err.message || "Ensure the FastAPI backend is running on port 8000."}</p>
+          </div>
+        `;
+        lucide.createIcons();
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Run Resume Tailor";
+      }
+    }
+
+    function renderTailorResult(res) {
+      const panel = document.getElementById('tailor-result-panel');
+
+      const skillsHTML = res.tailored_skills.map(s => `
+        <span class="text-[9px] font-semibold bg-zinc-900 text-zinc-300 px-2 py-0.5 rounded border border-zinc-800">${s}</span>
+      `).join('');
+
+      const expHTML = res.tailored_experience.map(exp => `
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between text-[11px]">
+            <span class="font-extrabold text-zinc-200">${exp.role}</span>
+            <span class="text-zinc-500 font-bold">${exp.company} • ${exp.duration}</span>
+          </div>
+          <ul class="space-y-1">
+            ${exp.highlights.map(h => `
+              <li class="text-[10.5px] text-zinc-400 leading-relaxed pl-3 relative flex items-start gap-1">
+                <span class="text-indigo-400 font-bold leading-[1.3]">•</span>
+                <span>${h}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      `).join('');
+
+      const projectsHTML = res.tailored_projects.map(p => `
+        <div class="space-y-1">
+          <h4 class="text-[11px] font-extrabold text-zinc-200">${p.title}</h4>
+          <p class="text-[10.5px] text-zinc-400 leading-relaxed">${p.description}</p>
+        </div>
+      `).join('');
+
+      panel.innerHTML = `
+        <div class="space-y-6 animate-fade-in">
+          <!-- Action buttons -->
+          <div class="flex gap-4 justify-end">
+            <button onclick="copyTailorMarkdown()" class="px-4 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-semibold hover:text-white flex items-center gap-1.5 cursor-pointer hover:border-zinc-700 transition-all">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              <span id="copy-btn-text">Copy Markdown</span>
+            </button>
+            <button onclick="downloadTailorMarkdown()" class="px-4 py-2 rounded-lg bg-indigo-600/25 border border-indigo-500/35 text-indigo-300 text-xs font-semibold hover:text-indigo-200 flex items-center gap-1.5 cursor-pointer hover:bg-indigo-600/35 transition-all">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Download MD</span>
+            </button>
+          </div>
+
+          <!-- Preview Sheet -->
+          <div class="glass-card p-6 rounded-xl space-y-6 border border-zinc-800 bg-zinc-950 font-sans shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-500 opacity-80"></div>
+            
+            <div class="text-center space-y-1.5 pb-6 border-b border-zinc-900">
+              <h2 class="text-lg font-black text-zinc-100 tracking-wider">ALEX MERCER</h2>
+              <p class="text-[10px] text-zinc-500 tracking-widest uppercase">alex.mercer@email.com • +1 (555) 019-2834</p>
+            </div>
+
+            <div class="space-y-2">
+              <h3 class="text-[10px] font-black text-indigo-400 tracking-widest uppercase pb-1 border-b border-zinc-900">Professional Summary</h3>
+              <p class="text-[11px] text-zinc-300 leading-relaxed font-sans font-medium">${res.tailored_summary}</p>
+            </div>
+
+            <div class="space-y-2">
+              <h3 class="text-[10px] font-black text-indigo-400 tracking-widest uppercase pb-1 border-b border-zinc-900">Technical Skills</h3>
+              <div class="flex flex-wrap gap-1">${skillsHTML}</div>
+            </div>
+
+            <div class="space-y-4">
+              <h3 class="text-[10px] font-black text-indigo-400 tracking-widest uppercase pb-1 border-b border-zinc-900">Professional Experience</h3>
+              <div class="space-y-4">${expHTML}</div>
+            </div>
+
+            <div class="space-y-3">
+              <h3 class="text-[10px] font-black text-indigo-400 tracking-widest uppercase pb-1 border-b border-zinc-900">Key Projects</h3>
+              <div class="space-y-3">${projectsHTML}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      lucide.createIcons();
+    }
+
+    function getMarkdownString() {
+      if (!tailoredData) return "";
+      let md = `# ALEX MERCER - TAILORED PROFILE\n\n`;
+      md += `## PROFESSIONAL SUMMARY\n${tailoredData.tailored_summary}\n\n`;
+      md += `## TECHNICAL SKILLS\n${tailoredData.tailored_skills.join(", ")}\n\n`;
+      md += `## WORK EXPERIENCE\n\n`;
+      tailoredData.tailored_experience.forEach(exp => {
+        md += `### ${exp.role} | ${exp.company} (${exp.duration})\n`;
+        exp.highlights.forEach(h => {
+          md += `- ${h}\n`;
+        });
+        md += `\n`;
+      });
+      md += `## SELECTED PROJECTS\n\n`;
+      tailoredData.tailored_projects.forEach(p => {
+        md += `### ${p.title}\n${p.description}\n\n`;
+      });
+      return md;
+    }
+
+    function copyTailorMarkdown() {
+      const md = getMarkdownString();
+      navigator.clipboard.writeText(md);
+      const text = document.getElementById('copy-btn-text');
+      text.innerText = "Copied!";
+      setTimeout(() => { text.innerText = "Copy Markdown"; }, 2000);
+    }
+
+    function downloadTailorMarkdown() {
+      const md = getMarkdownString();
+      const blob = new Blob([md], { type: "text/markdown;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "tailored_resume.md");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+
+    // ------------------ GITHUB AUDIT LOGIC ------------------
+    async function handleGithubSubmit(e) {
+      e.preventDefault();
+      const username = document.getElementById('github-username').value.trim();
+      if (!username) return;
+
+      const submitBtn = document.getElementById('github-submit-btn');
+      const profileCard = document.getElementById('github-profile-card');
+      const resultPanel = document.getElementById('github-result-panel');
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Auditing Profile...`;
+      lucide.createIcons();
+
+      profileCard.classList.add('hidden');
+      resultPanel.innerHTML = `
+        <div class="glass-card p-12 rounded-xl text-center text-zinc-500 flex flex-col items-center justify-center h-full min-h-[400px]">
+          <i data-lucide="loader-2" class="w-9 h-9 text-indigo-400 animate-spin mb-4"></i>
+          <p class="text-xs text-zinc-300 font-semibold">Reading repositories metadata...</p>
+          <p class="text-[10px] text-zinc-500 mt-1 max-w-xs leading-relaxed">Compiling language breakdowns and generating project lists...</p>
+        </div>
+      `;
+      lucide.createIcons();
+
+      try {
+        const response = await fetch(`/api/github/${encodeURIComponent(username)}`);
+        if (!response.ok) throw new Error("GitHub audit returned an error status.");
+        
+        const data = await response.json();
+        renderGithubResult(data);
+      } catch (err) {
+        resultPanel.innerHTML = `
+          <div class="glass-card p-6 rounded-xl border border-red-500/20 bg-red-500/5 text-center space-y-2">
+            <i data-lucide="alert-circle" class="w-10 h-10 text-red-400 mx-auto"></i>
+            <h4 class="text-sm font-bold text-red-200">Failed to Complete Audit</h4>
+            <p class="text-xs text-red-400">${err.message || "Ensure the FastAPI backend is running on port 8000."}</p>
+          </div>
+        `;
+        lucide.createIcons();
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Run Profile Audit";
+      }
+    }
+
+    function getLangColor(lang) {
+      const colors = {
+        Python: "bg-blue-500",
+        TypeScript: "bg-indigo-500",
+        JavaScript: "bg-amber-400",
+        HTML: "bg-orange-500",
+        CSS: "bg-pink-500",
+        Rust: "bg-orange-700",
+        Go: "bg-cyan-500"
+      };
+      return colors[lang] || "bg-zinc-500";
+    }
+
+    function renderGithubResult(res) {
+      const profileCard = document.getElementById('github-profile-card');
+      const resultPanel = document.getElementById('github-result-panel');
+
+      // 1. Profile overview sidebar
+      const langsList = Object.entries(res.languages).map(([lang, pct]) => `
+        <div class="space-y-1">
+          <div class="flex justify-between text-[10px] font-semibold text-zinc-400">
+            <span>${lang}</span>
+            <span>${pct}%</span>
+          </div>
+          <div class="h-1.5 w-full bg-zinc-900 rounded-full overflow-hidden">
+            <div class="h-full rounded-full ${getLangColor(lang)}" style="width: ${pct}%"></div>
+          </div>
+        </div>
+      `).join('');
+
+      profileCard.className = "glass-card p-6 rounded-xl space-y-6 animate-fade-in";
+      profileCard.innerHTML = `
+        <div class="flex items-center gap-4">
+          <img src="${res.avatar_url}" alt="${res.username}" class="w-16 h-16 rounded-full border border-zinc-700 bg-zinc-900" />
+          <div class="space-y-1">
+            <h3 class="text-sm font-extrabold text-zinc-200">@${res.username}</h3>
+            <a href="${res.profile_url}" target="_blank" class="text-[10px] text-indigo-400 hover:underline flex items-center gap-1 font-semibold">
+              View on GitHub
+              <i data-lucide="external-link" class="w-2.5 h-2.5"></i>
+            </a>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 border-y border-zinc-800/60 py-4">
+          <div class="text-center">
+            <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Public Repos</p>
+            <p class="text-lg font-black text-zinc-200 mt-1">${res.public_repos}</p>
+          </div>
+          <div class="text-center">
+            <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Followers</p>
+            <p class="text-lg font-black text-zinc-200 mt-1">${res.followers}</p>
+          </div>
+        </div>
+        <div class="space-y-3">
+          <h4 class="text-[10px] font-bold text-zinc-300 uppercase tracking-wider">Language Breakdowns</h4>
+          <div class="space-y-2.5">${langsList}</div>
+        </div>
+      `;
+
+      // 2. Recommendations & Repos list
+      const recsList = res.recommendations.map(r => `
+        <li class="text-xs text-zinc-300 leading-normal flex items-start gap-2.5">
+          <span class="text-purple-400 font-bold mt-0.5">•</span>
+          <span>${r}</span>
+        </li>
+      `).join('');
+
+      let reposGrid = res.repositories.map(repo => `
+        <div class="glass-card p-5 rounded-xl flex flex-col justify-between hover:border-zinc-700/80 transition-all group">
+          <div class="space-y-2">
+            <div class="flex justify-between items-start">
+              <span class="text-xs font-bold text-zinc-200 group-hover:text-indigo-400 truncate max-w-[180px] transition-colors">${repo.name}</span>
+              <span class="text-[8.5px] font-bold text-white px-1.5 py-0.5 rounded ${getLangColor(repo.language)}">${repo.language}</span>
+            </div>
+            <p class="text-[10.5px] text-zinc-400 leading-relaxed line-clamp-3">${repo.description}</p>
+          </div>
+          <div class="flex justify-between items-center mt-4 pt-3 border-t border-zinc-900">
+            <div class="flex gap-3 text-[10px] text-zinc-500 font-medium">
+              <span class="flex items-center gap-1">
+                <i data-lucide="star" class="w-3 h-3 text-amber-400"></i>
+                ${repo.stars}
+              </span>
+              <span class="flex items-center gap-1">
+                <i data-lucide="git-fork" class="w-3 h-3 text-zinc-500"></i>
+                ${repo.forks}
+              </span>
+            </div>
+            <a href="${repo.url}" target="_blank" class="text-[9px] text-indigo-400 hover:underline flex items-center gap-1 font-semibold">
+              View repo
+              <i data-lucide="external-link" class="w-2.5 h-2.5"></i>
+            </a>
+          </div>
+        </div>
+      `).join('');
+      if (!reposGrid) reposGrid = '<div class="glass-card p-6 rounded-xl col-span-2 text-center text-xs text-zinc-500 italic">No public repos.</div>';
+
+      resultPanel.innerHTML = `
+        <div class="space-y-6 animate-fade-in">
+          <div class="glass-card p-5 rounded-xl space-y-3">
+            <h4 class="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-purple-400 animate-bounce"></i>
+              AI Portfolio Optimization Guidelines
+            </h4>
+            <ul class="space-y-2">${recsList}</ul>
+          </div>
+          <div class="space-y-4">
+            <h4 class="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="book-open" class="w-3.5 h-3.5 text-indigo-400"></i>
+              Featured Repositories
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">${reposGrid}</div>
+          </div>
+        </div>
+      `;
+      lucide.createIcons();
+    }
+
+
+    // ------------------ INTERVIEW PREP LOGIC ------------------
+    function handleInterviewFile(e) {
+      if (e.target.files && e.target.files[0]) {
+        interviewFile = e.target.files[0];
+        document.getElementById('interview-file-zone').classList.add('hidden');
+        document.getElementById('interview-file-display').classList.remove('hidden');
+        document.getElementById('interview-filename').innerText = interviewFile.name;
+        document.getElementById('interview-filesize').innerText = (interviewFile.size / 1024).toFixed(1) + " KB";
+        document.getElementById('interview-text-input').classList.add('hidden');
+      }
+    }
+
+    function removeInterviewFile() {
+      interviewFile = null;
+      document.getElementById('interview-file-input').value = "";
+      document.getElementById('interview-file-zone').classList.remove('hidden');
+      document.getElementById('interview-file-display').classList.add('hidden');
+      document.getElementById('interview-text-input').classList.remove('hidden');
+    }
+
+    async function handleInterviewSubmit(e) {
+      e.preventDefault();
+      const resumeText = document.getElementById('interview-text-input').value.trim();
+      const jobDesc = document.getElementById('interview-job-input').value.trim();
+
+      if (!interviewFile && !resumeText) {
+        alert("Please upload a resume file or paste your resume text.");
+        return;
+      }
+
+      const submitBtn = document.getElementById('interview-submit-btn');
+      const resultPanel = document.getElementById('interview-result-panel');
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Generating Prep Pack...`;
+      lucide.createIcons();
+
+      resultPanel.innerHTML = `
+        <div class="glass-card p-12 rounded-xl text-center text-zinc-500 flex flex-col items-center justify-center h-full min-h-[400px]">
+          <i data-lucide="loader-2" class="w-9 h-9 text-indigo-400 animate-spin mb-4"></i>
+          <p class="text-xs text-zinc-300 font-semibold">Generating questions deck...</p>
+          <p class="text-[10px] text-zinc-500 mt-1 max-w-xs leading-relaxed">Extracting requirements and designing customized loops...</p>
+        </div>
+      `;
+      lucide.createIcons();
+
+      const formData = new FormData();
+      if (interviewFile) {
+        formData.append("file", interviewFile);
+      } else {
+        formData.append("resume_text", resumeText);
+      }
+      formData.append("job_description", jobDesc);
+
+      try {
+        const response = await fetch("/api/interview", {
+          method: "POST",
+          body: formData
+        });
+
+        if (!response.ok) throw new Error("Interview prep endpoint returned an error status.");
+        
+        interviewQuestions = await response.json();
+        expandedQuestions = {};
+        renderInterviewResult();
+      } catch (err) {
+        resultPanel.innerHTML = `
+          <div class="glass-card p-6 rounded-xl border border-red-500/20 bg-red-500/5 text-center space-y-2">
+            <i data-lucide="alert-circle" class="w-10 h-10 text-red-400 mx-auto"></i>
+            <h4 class="text-sm font-bold text-red-200">Failed to Compile Practice Deck</h4>
+            <p class="text-xs text-red-400">${err.message || "Ensure the FastAPI backend is running on port 8000."}</p>
+          </div>
+        `;
+        lucide.createIcons();
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Generate Interview Questions";
+      }
+    }
+
+    function changeInterviewTab(tab) {
+      activeInterviewTab = tab;
+      renderInterviewResult();
+    }
+
+    function toggleQuestionExpand(id) {
+      expandedQuestions[id] = !expandedQuestions[id];
+      renderInterviewResult();
+    }
+
+    function getQuestionStyle(type) {
+      switch (type) {
+        case "Technical": return "bg-blue-500/10 text-blue-400 border border-blue-500/20";
+        case "Behavioral": return "bg-purple-500/10 text-purple-400 border border-purple-500/20";
+        case "HR": return "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+        default: return "bg-zinc-500/10 text-zinc-400 border border-zinc-500/20";
+      }
+    }
+
+    function renderInterviewResult() {
+      const panel = document.getElementById('interview-result-panel');
+      const filtered = interviewQuestions.filter(q => activeInterviewTab === "All" || q.type === activeInterviewTab);
+
+      const tabsHTML = ["All", "Technical", "Behavioral", "HR"].map(tab => `
+        <button onclick="changeInterviewTab('${tab}')" class="px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+          activeInterviewTab === tab ? "bg-zinc-800 text-indigo-400 shadow-sm" : "text-zinc-400 hover:text-zinc-200"
+        }">${tab}</button>
+      `).join('');
+
+      const cardsHTML = filtered.map(q => {
+        const isExp = !!expandedQuestions[q.id];
+        return `
+          <div class="glass-card rounded-xl transition-all duration-300 ${isExp ? 'border-zinc-700 bg-zinc-900/40' : 'hover:border-zinc-800/80'}">
+            <div onclick="toggleQuestionExpand(${q.id})" class="p-5 flex items-start justify-between gap-4 cursor-pointer select-none">
+              <div class="space-y-2">
+                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${getQuestionStyle(q.type)}">${q.type}</span>
+                <h4 class="text-xs font-extrabold text-zinc-200 leading-relaxed pr-6">${q.question}</h4>
+              </div>
+              <div class="p-1 text-zinc-500 hover:text-zinc-300">
+                <i data-lucide="${isExp ? 'chevron-up' : 'chevron-down'}" class="w-4 h-4"></i>
+              </div>
+            </div>
+            ${isExp ? `
+              <div class="px-5 pb-5 pt-1 border-t border-zinc-900 space-y-4 animate-fade-in">
+                <div class="space-y-1.5">
+                  <h5 class="text-[10px] font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1">
+                    <i data-lucide="help-circle" class="w-3 h-3"></i>
+                    Suggested Response Framework
+                  </h5>
+                  <p class="text-[11px] text-zinc-300 leading-relaxed bg-zinc-950 p-3 rounded-lg border border-zinc-900 font-medium">${q.answer}</p>
+                </div>
+                <div class="space-y-1">
+                  <h5 class="text-[10px] font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1">
+                    <i data-lucide="bookmark" class="w-3 h-3"></i>
+                    Evaluation Focus & Rationale
+                  </h5>
+                  <p class="text-[10.5px] text-zinc-400 leading-relaxed">${q.rationale}</p>
+                </div>
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                  ${q.topics.map(t => `<span class="text-[9px] font-semibold bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded">${t}</span>`).join('')}
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+
+      panel.innerHTML = `
+        <div class="space-y-6 animate-fade-in">
+          <div class="flex gap-2 p-1 bg-zinc-900 border border-zinc-800 rounded-lg w-fit">${tabsHTML}</div>
+          <div class="space-y-4">
+            ${cardsHTML || `<div class="glass-card p-8 rounded-xl text-center text-xs text-zinc-500 italic">No questions match type '${activeInterviewTab}'</div>`}
+          </div>
+        </div>
+      `;
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>
