@@ -1,6 +1,6 @@
 # Capstone Project
 
-CAREERPILOT AI
+# CareerPilot AI - 
 
 ## 📖 Overview
 
