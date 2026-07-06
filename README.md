@@ -1,5 +1,7 @@
 # Capstone Project
 
+CAREERPILOT AI
+
 ## 📖 Overview
 
 This project is a full-stack web application developed as part of my capstone project. It consists of a separate frontend and backend to provide a modular, scalable, and maintainable architecture.
